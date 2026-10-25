@@ -17,6 +17,7 @@
   --ink:#EAF5FE;--muted:rgba(176,214,255,.78);--glass:rgba(4,22,68,.52);--edge:rgba(144,208,254,.2);--ease:cubic-bezier(.2,.8,.2,1);
   --font:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
   --el-font:"Inter","Helvetica Neue",Helvetica,Arial,sans-serif;--paper:#F5F3F1;--coal:#0B0B0B;
+  --star:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cdefs%3E%3CradialGradient id=%27g%27 cx=%27.42%27 cy=%27.38%27 r=%27.72%27%3E%3Cstop offset=%270%27 stop-color=%27%23FFF3C8%27/%3E%3Cstop offset=%27.5%27 stop-color=%27%23F1C65E%27/%3E%3Cstop offset=%271%27 stop-color=%27%23DFA63A%27/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d=%27M50 6C56 33 67 44 94 50C67 56 56 67 50 94C44 67 33 56 6 50C33 44 44 33 50 6Z%27 fill=%27url(%23g)%27 stroke=%27%23E2AD48%27 stroke-width=%277%27 stroke-linejoin=%27round%27 paint-order=%27stroke%27/%3E%3Cpath d=%27M55 22C57.5 35 63 41.5 76 45.5%27 fill=%27none%27 stroke=%27%23fff%27 stroke-opacity=%27.85%27 stroke-width=%273.2%27 stroke-linecap=%27round%27/%3E%3Cpath d=%27M27 55.5C36 58 42 62 45 71%27 fill=%27none%27 stroke=%27%23fff%27 stroke-opacity=%27.45%27 stroke-width=%272.6%27 stroke-linecap=%27round%27/%3E%3C/svg%3E");
   --G:84px;--T:66px;--rz:-18deg;--W:270px;--D:196px;--s:.92}
 *{box-sizing:border-box}html,body{margin:0}
 body{font-family:var(--font);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
@@ -88,13 +89,17 @@ body.on-who .hdr::before{opacity:1}
 .iso .fc.f b{color:rgba(11,11,11,.6);transition:color .45s}
 .top::before{content:"";position:absolute;inset:14px;border-radius:calc(var(--r,24px) - 10px);border:1px solid rgba(255,255,255,.3)}
 /* floating call-out: translucent glass turned to face the camera; lit, it takes on its employer's brand colour.
+   It turns about its own top-left corner, pinned at the middle of its block's front face (the logo), so its middle
+   and its connector sit level with the logo, perspective and all; --tx then slides it out past the tower's edge:
+   122px to the right edge, 173px to the left (half the block's width and depth turned 18deg, its 24px corners;
+   the left edge is at the back, so perspective draws it 10px nearer) plus the connector.
    No backdrop-filter: a live blur on nine moving cards inside the 3D tower dropped the HQ to a few frames a second */
 .lab{position:absolute;display:flex;align-items:center;gap:12px;padding:10px 20px 10px 10px;border-radius:16px;color:var(--coal);white-space:nowrap;
   background:rgba(255,255,255,.62);border:1px solid rgba(11,11,11,.08);
   transition:opacity .45s,box-shadow .45s,border-color .45s,background-color .45s;
-  box-shadow:inset 0 0 0 200px rgba(var(--hue,var(--rgb)),0),inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(var(--hue,var(--rgb)),0),0 0 26px 2px rgba(var(--hue,var(--rgb)),0),0 0 64px 12px rgba(var(--hue,var(--rgb)),0),0 18px 34px -20px rgba(11,11,11,.3);transform:translateZ(-6px) rotateZ(calc(var(--rz)*-1)) rotateX(-64deg) translate(var(--tx),-50%);animation:bob 5s ease-in-out infinite;animation-delay:calc(var(--i)*-.55s)}
-.lab.l{left:0;top:0;--tx:calc(-100% - 30px);flex-direction:row-reverse;text-align:right;padding:10px 10px 10px 20px}
-.lab.r{left:100%;top:100%;--tx:30px}
+  box-shadow:inset 0 0 0 200px rgba(var(--hue,var(--rgb)),0),inset 0 1px 0 rgba(255,255,255,.9),0 0 0 1px rgba(var(--hue,var(--rgb)),0),0 0 26px 2px rgba(var(--hue,var(--rgb)),0),0 0 64px 12px rgba(var(--hue,var(--rgb)),0),0 18px 34px -20px rgba(11,11,11,.3);left:50%;top:100%;transform-origin:0 0;transform:translateZ(calc(var(--T)/-2)) rotateZ(calc(var(--rz)*-1)) rotateX(-64deg) translate(var(--tx),-50%);animation:bob 5s ease-in-out infinite;animation-delay:calc(var(--i)*-.55s)}
+.lab.l{--tx:calc(-100% - 203px);flex-direction:row-reverse;text-align:right;padding:10px 10px 10px 20px}
+.lab.r{--tx:152px}
 .lab .lc{width:50px;height:50px;flex:none;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 1px rgba(11,11,11,.08)}
 .lab .lc img{width:100%;height:100%;object-fit:contain}
 .lab span{display:flex;flex-direction:column;line-height:1.2}
@@ -103,8 +108,12 @@ body.on-who .hdr::before{opacity:1}
 .lab::after{content:"";position:absolute;top:50%;width:30px;height:2px;margin-top:-1px;background:rgba(11,11,11,.16);transition:background-color .45s,box-shadow .45s}
 .lab.l::after{right:-30px}.lab.r::after{left:-30px}
 /* a faint gold sparkle on a starred call-out's outer top corner (top-right on the right, top-left on the left) */
-.lab.star::before{content:"";position:absolute;top:-15px;width:32px;height:32px;opacity:.55;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cdefs%3E%3CradialGradient id=%27g%27 cx=%27.42%27 cy=%27.38%27 r=%27.72%27%3E%3Cstop offset=%270%27 stop-color=%27%23FFF3C8%27/%3E%3Cstop offset=%27.5%27 stop-color=%27%23F1C65E%27/%3E%3Cstop offset=%271%27 stop-color=%27%23DFA63A%27/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d=%27M50 6C56 33 67 44 94 50C67 56 56 67 50 94C44 67 33 56 6 50C33 44 44 33 50 6Z%27 fill=%27url(%23g)%27 stroke=%27%23E2AD48%27 stroke-width=%277%27 stroke-linejoin=%27round%27 paint-order=%27stroke%27/%3E%3Cpath d=%27M55 22C57.5 35 63 41.5 76 45.5%27 fill=%27none%27 stroke=%27%23fff%27 stroke-opacity=%27.85%27 stroke-width=%273.2%27 stroke-linecap=%27round%27/%3E%3Cpath d=%27M27 55.5C36 58 42 62 45 71%27 fill=%27none%27 stroke=%27%23fff%27 stroke-opacity=%27.45%27 stroke-width=%272.6%27 stroke-linecap=%27round%27/%3E%3C/svg%3E") center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(236,186,84,.5))}
+.lab.star::before{content:"";position:absolute;top:-15px;width:32px;height:32px;opacity:.55;pointer-events:none;background:var(--star) center/contain no-repeat;filter:drop-shadow(0 0 6px rgba(236,186,84,.5))}
 .lab.r::before{right:-15px}.lab.l::before{left:-15px}
+/* the key to the sparkle, at the HQ's bottom left */
+.hq-key{position:absolute;left:clamp(18px,2.2vw,28px);bottom:clamp(18px,2.2vw,28px);z-index:1;display:flex;align-items:center;gap:9px;padding:7px 16px 7px 9px;border-radius:99px;
+  background:rgba(255,255,255,.62);border:1px solid rgba(11,11,11,.08);box-shadow:0 10px 24px -14px rgba(11,11,11,.22);font-size:13.5px;font-weight:500;color:var(--coal);pointer-events:none}
+.hq-key i{width:24px;height:24px;background:var(--star) center/contain no-repeat;filter:drop-shadow(0 0 5px rgba(236,186,84,.5))}
 @keyframes bob{50%{translate:0 0 8px}}
 .iso.has-hot .fl:not(.hot)>*{opacity:.3}
 .iso.has-hot .fl:not(.hot) .lab{opacity:.5}
@@ -162,14 +171,10 @@ body.on-who .hq{visibility:hidden;transition:visibility 0s .6s}
   -webkit-mask-image:linear-gradient(205deg,#000 0%,rgba(0,0,0,.5) 45%,transparent 80%);mask-image:linear-gradient(205deg,#000 0%,rgba(0,0,0,.5) 45%,transparent 80%)}
 .w-motif::before{content:"";position:absolute;inset:-280px;animation:drift 160s linear infinite;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' fill='none' stroke='%23fff' stroke-width='1'%3E%3Cpath d='M130 0C130 51 10 89 10 140S130 229 130 280M150 0C150 51 270 89 270 140S150 229 150 280'/%3E%3Crect x='98' y='76' width='84' height='128' rx='38'/%3E%3Crect x='-64' y='-38' width='128' height='76' rx='34'/%3E%3Crect x='216' y='-38' width='128' height='76' rx='34'/%3E%3Crect x='-64' y='242' width='128' height='76' rx='34'/%3E%3Crect x='216' y='242' width='128' height='76' rx='34'/%3E%3C/svg%3E") 0 0/280px 280px}
 @keyframes drift{to{transform:translate(280px,280px)}}
-.w-now{position:absolute;left:clamp(18px,2.2vw,28px);bottom:clamp(18px,2.2vw,28px);display:flex;align-items:center;gap:10px;padding:11px 18px 11px 14px;border-radius:99px;
-  background:rgba(255,255,255,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.42);color:#fff;font-size:14px;font-weight:500;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-.w-now i{width:8px;height:8px;border-radius:50%;background:#fff;animation:ping 2.2s var(--ease) infinite}
-@keyframes ping{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%,100%{box-shadow:0 0 0 9px rgba(255,255,255,0)}}
 /* sections: a big two-tone statement, black then grey */
 .w-sec{padding-top:clamp(80px,9vw,148px)}
 .w-big{font-size:clamp(28px,3.2vw,48px);line-height:1.13;font-weight:500;letter-spacing:-.036em;max-width:23em;color:var(--coal)}
-.w-big span{color:rgba(11,11,11,.4)}
+.w-big span{color:#979695}
 .w-sec>.w-eye{margin-bottom:28px}
 /* the quote: white on the black-and-white Color Palette */
 .w-qc{position:relative;margin:0;overflow:hidden;isolation:isolate;border-radius:28px;color:#fff;
@@ -185,7 +190,7 @@ body.on-who .hq{visibility:hidden;transition:visibility 0s .6s}
 .w-note p{max-width:34em;font-size:clamp(16px,1.2vw,18px);line-height:1.58;color:rgba(11,11,11,.64)}
 .w-note .w-nb{max-width:19em;font-size:clamp(21px,1.75vw,26px);line-height:1.28;font-weight:500;letter-spacing:-.025em;color:var(--coal)}
 /* the philosophy: three cards, each with a slowly turning brand-gradient orb */
-.w-h2{font-size:clamp(34px,3.7vw,58px);line-height:1.02;letter-spacing:-.048em}.w-h2 span{color:rgba(11,11,11,.4)}
+.w-h2{font-size:clamp(34px,3.7vw,58px);line-height:1.02;letter-spacing:-.048em}.w-h2 span{color:#979695}.w-h2 .kr{letter-spacing:-.01em}
 .w-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:clamp(36px,4vw,56px)}
 .w-cards article{display:flex;flex-direction:column;min-height:320px;padding:28px 30px 30px;border-radius:24px;background:#fff;box-shadow:inset 0 0 0 1px rgba(11,11,11,.07)}
 .w-cards header{display:flex;justify-content:space-between;align-items:flex-start}
@@ -197,18 +202,8 @@ body.on-who .hq{visibility:hidden;transition:visibility 0s .6s}
   background:conic-gradient(from var(--a,0deg),#9F97B2,#B93E3B,#E25731,#F59034,#FFD6A0,#9F97B2)}
 .w-orb::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 34% 28%,rgba(255,255,255,.8),rgba(255,255,255,0) 50%),radial-gradient(circle at 72% 82%,rgba(11,11,11,.16),transparent 58%)}
 @keyframes spin{to{transform:rotate(1turn)}}
-/* the way on: part two, in black with the Graphic Palette's wavy lines */
-.w-end{padding-bottom:clamp(40px,4.4vw,64px)}
-.w-next{position:relative;display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-top:clamp(40px,5vw,68px);min-height:clamp(260px,24vw,340px);padding:clamp(28px,3.6vw,52px);
-  border-radius:28px;overflow:hidden;isolation:isolate;background:var(--coal);color:#fff;text-decoration:none}
-.w-next svg{position:absolute;inset:0;width:100%;height:100%;z-index:-1}
-.w-next path{fill:none;stroke:#fff;stroke-width:1;vector-effect:non-scaling-stroke}
-.w-next g{animation:wv 9s linear infinite}
-@keyframes wv{to{transform:translateX(300px)}}
-.w-next .w-eye{color:rgba(255,255,255,.7)}.w-next .w-eye b{background:#fff;color:var(--coal)}
-.w-next strong{display:block;margin-top:18px;font-size:clamp(38px,4.6vw,72px);font-weight:500;letter-spacing:-.05em;line-height:.98}
-.w-next .wbtn{flex:none;box-shadow:none}
-.w-next:hover .wbtn{transform:translateY(-2px)}.w-next:hover .wbtn span{transform:translateX(3px)}
+/* the close: one last statement */
+.w-end{padding-bottom:clamp(56px,6vw,96px)}
 .w-hero .w-card.rv{transition-delay:.12s}
 .w-cards article.rv:nth-child(2){transition-delay:.08s}.w-cards article.rv:nth-child(3){transition-delay:.16s}
 
@@ -450,7 +445,7 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
   .iso{top:84%;left:calc(50% - 4px)}
   .lab{gap:10px;padding:8px 16px 8px 8px}.lab.l{padding:8px 8px 8px 16px}
   .lab .lc{width:46px;height:46px}.lab b{font-size:24px}.lab small{display:none}
-  .lab.l{--tx:calc(-100% - 14px)}.lab.r{--tx:14px}.lab::after{width:14px}.lab.l::after{right:-14px}.lab.r::after{left:-14px}
+  .lab.l{--tx:calc(-100% - 187px)}.lab.r{--tx:136px}.lab::after{width:14px}.lab.l::after{right:-14px}.lab.r::after{left:-14px}
   .parts a{padding:8px 11px;font-size:12.5px}.brand small,.hlinks .hbtn span{display:none}
   .hdr{padding:12px 4vw;flex-wrap:wrap}
   .hero{grid-template-columns:1fr;gap:28px;padding-top:24px;min-height:0}.hfloor{height:260px;order:-1}.hfloor .slab{transform:scale(.72) rotateX(56deg) rotateZ(-18deg)}
@@ -464,7 +459,7 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
   .w-hero{grid-template-columns:1fr;min-height:0;gap:30px;padding:100px 0 0}.w-copy{padding:0}
   .w-card{min-height:0;height:400px;border-radius:24px}.lat{transform:translateY(-50%) scale(.74);transform-origin:100% 50%}
   .w-cards{grid-template-columns:1fr}.w-cards article{min-height:0}.w-cards h3{padding-top:30px}
-  .w-note{grid-template-columns:1fr;gap:14px}.w-next{flex-direction:column;align-items:flex-start}
+  .w-note{grid-template-columns:1fr;gap:14px}
 }
 @media (max-width:440px){:root{--s:.33}.tw-wrap{height:420px}.parts a{padding:8px 10px;font-size:12px}.hdr{gap:10px}}
 /* phones: the name and links on one row, the two parts as a full-width switch under them */
@@ -472,7 +467,7 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
 /* phones: every call-out joins the right-hand column, which leaves the width to draw the HQ half as big again */
 @media (max-width:520px){
   :root{--s:.5;--G:100px}.tw-wrap{height:640px}.iso{left:calc(50% - 92px)}
-  .lab.l{left:100%;top:100%;--tx:14px;flex-direction:row;text-align:left;padding:8px 16px 8px 8px}
+  .lab.l{--tx:136px;flex-direction:row;text-align:left;padding:8px 16px 8px 8px}
   .lab.l::after{right:auto;left:-14px}.lab.l::before{left:auto;right:-15px}
   .lab b{font-size:28px}
 }
@@ -510,7 +505,6 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
       <div class="w-card rv" aria-hidden="true">
         <canvas data-pal="orange"></canvas><div class="w-grain"></div><div class="w-motif"></div>
         <div class="lat r" data-w="PERSEVERANT,RELENTLESS,CURIOUS,STUDENT,SUCCESS,ACCOUNTABLE,TEAM PLAYER,GROWTH,PERSONABLE"></div>
-        <p class="w-now"><i></i>Now: Partner Sales, Salesforce ANZ</p>
       </div>
     </div>
 
@@ -525,7 +519,7 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
     </section>
 
     <section class="w-sec wi" aria-labelledby="whoP">
-      <h2 class="w-h2 rv" id="whoP">My philosophy is simple.<br><span>There is always a path forward.</span></h2>
+      <h2 class="w-h2 rv" id="whoP">My philosophy is simple.<br><span>There is always a path fo<span class="kr">r</span>ward.</span></h2>
       <div class="w-cards">
         <article class="rv"><header><span class="w-orb" style="--a:0deg" aria-hidden="true"></span><i>01</i></header><h3>Stay deeply curious</h3><p>Ask the next question. Know the customer, the partner and the territory inside out.</p></article>
         <article class="rv"><header><span class="w-orb" style="--a:120deg" aria-hidden="true"></span><i>02</i></header><h3>Work my absolute hardest</h3><p>Plan rigorously, own every deal end to end and keep pushing when it stalls.</p></article>
@@ -533,16 +527,13 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
       </div>
     </section>
 
-    <section class="w-sec w-end wi" aria-label="Part two">
-      <p class="w-big rv">That relentless forward focus is what I bring to every role, territory and customer. <span>It is a promise to my leaders, my managers and myself.</span></p>
-      <a class="w-next rv" href="#/hq"><svg viewBox="0 0 1200 340" preserveAspectRatio="xMaxYMid slice" aria-hidden="true"><g><path d="M-600 24q75 -10 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.16"/><path d="M-586 46q75 -13 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.18"/><path d="M-572 68q75 -16 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.20"/><path d="M-558 90q75 -19 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.23"/><path d="M-544 112q75 -22 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.25"/><path d="M-530 134q75 -25 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.27"/><path d="M-516 156q75 -28 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.29"/><path d="M-502 178q75 -31 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.31"/><path d="M-488 200q75 -34 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.34"/><path d="M-474 222q75 -37 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.36"/><path d="M-460 244q75 -40 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.38"/><path d="M-446 266q75 -43 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.40"/><path d="M-432 288q75 -46 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.42"/><path d="M-418 310q75 -49 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.45"/><path d="M-404 332q75 -52 150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0t150 0" opacity="0.47"/></g></svg>
-        <span><span class="w-eye"><b>02</b>Part two · My Experience</span><strong>Nine roles.<br>One HQ.</strong></span>
-        <span class="wbtn">Enter the HQ <span aria-hidden="true">→</span></span>
-      </a>
+    <section class="w-sec w-end wi" aria-label="What I bring">
+      <p class="w-big rv">That relentless forward focus is what I bring to every role, territory and customer. <span>It is also a promise to my leaders, my managers and myself.</span></p>
     </section>
   </section>
   <section class="hq" id="hq" tabindex="-1" aria-label="My Experience: the career HQ">
     <div class="tw-wrap"><div class="iso" id="iso"><div class="pad"></div><div class="spine"></div><div class="spine b"></div></div></div>
+    <p class="hq-key" aria-hidden="true"><i></i>Key callout</p>
   </section>
 </main>
 
@@ -657,7 +648,7 @@ const iso=$('#iso');
 /* the call-outs that carry the gold sparkle */
 const STARRED=new Set(['wristband-towel','yrk-kutzz','whatslively','salesforce']);
 EXP.forEach((e,idx)=>{const f=document.createElement('div');f.className='fl';f.tabIndex=0;f.setAttribute('role','button');
-  f.setAttribute('aria-label',`Floor ${idx+1}: ${e.name}, ${e.role}. Open this experience`);
+  f.setAttribute('aria-label',`Floor ${idx+1}: ${e.name}, ${e.role}.${STARRED.has(e.id)?' Key callout.':''} Open this experience`);
   f.style.cssText=`--i:${N-1-idx};--rgb:${rgb(e.c)}`;
   f.innerHTML=slab(e)+`<div class="lab ${idx%2?'l':'r'}${STARRED.has(e.id)?' star':''}" style="--i:${idx}"><div class="lc"><img src="${emp(e)}" alt=""></div><span><b>${esc(e.lab||e.name)}</b><small>${esc(e.short||e.role)}</small></span></div>`;
   iso.appendChild(f);});
@@ -727,7 +718,7 @@ void main(){vec2 p=vec2(gl_FragCoord.x,R.y-gl_FragCoord.y)/D;
   const a=gl.getAttribLocation(pr,'a');gl.enableVertexAttribArray(a);gl.vertexAttribPointer(a,2,gl.FLOAT,false,0,0);
   const U=n=>gl.getUniformLocation(pr,n),uR=U('R'),uC=U('C'),uT=U('T'),uD=U('D'),uB=U('B'),uQ=U('Q');gl.uniform1f(U('PU'),REDUCED?0:1);
   /* what the lines clear around, read from the page each frame (floors lift, call-outs bob): the tower as one shape, then each call-out and the header */
-  const spine=iso.querySelector('.spine'),slabs=FL.flatMap(f=>[f.querySelector('.top'),f.querySelector('.ed.b')]),labs=FL.map(f=>f.querySelector('.lab')),hd=[...document.querySelectorAll('.brand,.parts,.hlinks')];
+  const spine=iso.querySelector('.spine'),slabs=FL.flatMap(f=>[f.querySelector('.top'),f.querySelector('.ed.b')]),labs=FL.map(f=>f.querySelector('.lab')),hd=[...document.querySelectorAll('.brand,.parts,.hlinks,.hq-key')];
   const bx=new Float32Array(NB*4),rd=new Float32Array(NB);
   const shapes=()=>{let n=0,x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;const put=(r,q)=>{bx.set([r.left,r.top,r.right,r.bottom],n*4);rd[n++]=q;};
     slabs.forEach(el=>{const r=el.getBoundingClientRect();x0=Math.min(x0,r.left);y0=Math.min(y0,r.top);x1=Math.max(x1,r.right);y1=Math.max(y1,r.bottom);});
