@@ -469,6 +469,15 @@ body.in-room .hq{visibility:hidden;transition:visibility 0s .85s}
 @media (max-width:440px){:root{--s:.33}.tw-wrap{height:420px}.parts a{padding:8px 10px;font-size:12px}.hdr{gap:10px}}
 /* phones: the name and links on one row, the two parts as a full-width switch under them */
 @media (max-width:600px){.hlinks{order:2}.parts{order:3;flex:1 0 100%}.parts a{flex:1;justify-content:center}.w-hero{padding-top:124px}}
+/* phones: every call-out joins the right-hand column, which leaves the width to draw the HQ half as big again */
+@media (max-width:520px){
+  :root{--s:.5;--G:100px}.tw-wrap{height:640px}.iso{left:calc(50% - 92px)}
+  .lab.l{left:100%;top:100%;--tx:14px;flex-direction:row;text-align:left;padding:8px 16px 8px 8px}
+  .lab.l::after{right:auto;left:-14px}.lab.l::before{left:auto;right:-15px}
+  .lab b{font-size:28px}
+}
+@media (max-width:374px){:root{--s:.45}.iso{left:calc(50% - 82px)}}
+@media (max-width:339px){:root{--s:.4}.iso{left:calc(50% - 74px)}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:0s!important;transition-delay:0s!important}
   .rv{opacity:1;transform:none}.room,.who{scroll-behavior:auto}
@@ -638,8 +647,9 @@ const logo=k=>(window.LOGOS||{})[k]||'';
 const emp=e=>logo('employers/'+e.k);
 const custOf=e=>e.cust?e.cust.logos.length:0;
 const nn=i=>String(i+1).padStart(2,'0');
-/* one glass block: 30 layers build its rounded sides, two faces carry the light, the white mark sits at the centre front */
-const slab=e=>{let h='';for(let k=30;k>=1;k--)h+=`<div class="ed${k===30?' b':''}" style="--k:${k}"></div>`;
+/* one glass block: 30 layers build its rounded sides (10 on phones, where they still read as one side), two faces carry the light, the white mark sits at the centre front */
+const SIDE=matchMedia('(max-width:520px)').matches?3:1;
+const slab=e=>{let h='';for(let k=30;k>=1;k-=SIDE)h+=`<div class="ed${k===30?' b':''}" style="--k:${k}"></div>`;
   return h+`<div class="fc s"></div><div class="fc f">${e.wmt?`<b>${e.wmt}</b>`:`<img src="${logo('white/'+e.k)}" alt="">`}</div><div class="top"></div>`;};
 
 /* ---------- the tower ---------- */
